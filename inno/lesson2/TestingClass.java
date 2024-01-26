@@ -1,4 +1,4 @@
-package inno.lesson_2;
+package inno.lesson2;
 
 import java.util.UUID;
 
@@ -18,7 +18,7 @@ public class TestingClass {
     }
 
     @Test(priority = 3)
-    @CsvSource(value = "10, Java, 20, true")
+    @CsvSource(value = "10,Java,0,true")
     public static void test3(int a, String b, int c, boolean d) {
 
         System.out.println("Executing Test with priority 3");
@@ -26,8 +26,10 @@ public class TestingClass {
     }
 
     @Test(priority = 9)
-    public static void test() {
+    @CsvSource("10, 20")
+    public static void test(int a, int b) {
         System.out.println("Executing Test with priority 9");
+        System.out.println("It was executed with parameters: " + a + " " + b );
     }
 
     @Test(priority = 10)
@@ -44,14 +46,14 @@ public class TestingClass {
     }
 
     @Test
-    @CsvSource(value = " 17, Python,  20,  false")
+    @CsvSource(value = "17,Python,20,false")
     public static void test5(int a, String b, int c, boolean d) {
         System.out.println("Executing Test with default priority (5) ");
         System.out.println("It was executed with parametrs: " + a + " " + b + " " + c + " " + d);
     }
 
     @AfterSuite
-    public static void Aftertest() {
+    public static void afterTest() {
         System.out.println("Executing Tests finished.");
     }
 

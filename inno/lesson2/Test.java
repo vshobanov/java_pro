@@ -1,8 +1,9 @@
-package inno.lesson_2;
+package inno.lesson2;
 
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface AfterSuite {
+public @interface Test {
+    int priority() default 5;
 }
