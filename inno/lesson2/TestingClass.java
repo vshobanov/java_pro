@@ -16,7 +16,6 @@ public class TestingClass {
         uuid = UUID.randomUUID();
         System.out.println("Firs step. Setted UUID =" + uuid);
     }
-
     @Test(priority = 3)
     @CsvSource(value = "10,Java,0,true")
     public static void test3(int a, String b, int c, boolean d) {
