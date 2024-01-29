@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class TestRunner {
-    public static void runTests(TestingClass tcls) throws AnnotationException {
+    public static void runTests(TestingClass tcls) throws TestConfigurationException {
         Class cls = tcls.getClass();
         Method[] methods = cls.getMethods();
         if (testAnnotationValidator(methods) && suiteAnnotationValidator(methods)) {
@@ -29,7 +29,7 @@ public class TestRunner {
                     throw new RuntimeException(e);
                 }
             }
-        } else throw new AnnotationException("Exception with annotated methods");
+        } else throw new TestConfigurationException("Exception with annotated methods");
     }
 
     public static int annotationsCounter(Method[] methods, Class annotation) {
@@ -53,7 +53,7 @@ public class TestRunner {
         return !(annotationsCounter(methods, BeforeSuite.class) > 1 || annotationsCounter(methods, AfterSuite.class) > 1);
     }
 
-    public static void testExecutor(TestingClass tcls ,Method[] methods) throws AnnotationException {
+    public static void testExecutor(TestingClass tcls ,Method[] methods) throws TestConfigurationException {
         Arrays.stream(methods)
                 .filter(m -> m.isAnnotationPresent(Test.class))
                 .sorted(Comparator.comparingInt(m -> m.getAnnotation(Test.class).priority()))
@@ -75,7 +75,7 @@ public class TestRunner {
                                         convertedParams[i] = Boolean.parseBoolean(data[i].trim());
                                     }
                                 }
-                            } else throw new AnnotationException("Incorrect methods marking (number of parameters)");
+                            } else throw new TestConfigurationException("Incorrect methods marking (number of parameters)");
                             method.invoke(tcls, convertedParams);
                         } else method.invoke(tcls);
                     } catch (Exception e) {
