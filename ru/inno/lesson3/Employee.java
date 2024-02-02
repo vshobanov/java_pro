@@ -3,7 +3,7 @@ package ru.inno.lesson3;
 public class Employee {
    private String name;
     private  int age;
-      String position;
+    private  String position;
 
 
     public Employee(String name, int age, String position) {

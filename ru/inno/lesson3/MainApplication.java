@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
@@ -59,17 +60,18 @@ public class MainApplication {
 
 
         Map<String, Integer> wordFrequency = Arrays.stream(inputString.split(" "))
-                .collect(Collectors.toMap(x -> x, x -> 1, Integer::sum));
+                .collect(Collectors.toMap(Function.identity(), x -> 1, Integer::sum));
         System.out.println(wordFrequency);
 
         System.out.println(Arrays.stream(inputString.split(" "))
                 .sorted(Comparator.comparing(String::length).thenComparing(Comparator.naturalOrder()))
                 .toList());
 
+
         System.out.println("Самое длинное слово в файле:" + Files.lines(Paths.get("ru/inno/lesson3/words.txt"))
                 .map(line -> (line.split(" ")))
                 .flatMap(Arrays::stream)
-                .sorted(Comparator.comparing(String::length).reversed()).limit(1).toList());
+                .max(Comparator.comparingInt(String::length)));
     }
 
 }
