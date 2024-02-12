@@ -13,24 +13,28 @@ public class CustomThreadPoolExecutor {
         workerThreads = new Thread[numThreads];
         int i = 0;
         for (Thread t : workerThreads) {
-            t = new Worker("Custom Thread " + ++i);
+            t = new Worker("Thread " + i++);
+            System.out.println("Thread-"+i +" created in ThreadPool.");
             t.start();
-            System.out.println(t.getName());
         }
     }
-    public void execute(Runnable r) {
+    public  void execute(Runnable r) {
+        if (isShutdown ) {
+            throw new IllegalStateException(String.format(
+                    "Cannot accept %s tasks. The pool has been shutdown.", r.toString()));
+        }
         synchronized (workerQueue) {
+            System.out.println("Task added.");
             workerQueue.addFirst(r);
             workerQueue.notify();
         }
     }
     public void shutdown() {
         isShutdown = true;
+        System.out.println("Shutdown Process initiated.");
         synchronized (workerQueue) {
-            for (Thread t : workerThreads) {
                 workerQueue.add(POISON_PILL);
                 workerQueue.notify();
-            }
         }
     }
 
@@ -41,6 +45,8 @@ public class CustomThreadPoolExecutor {
 
         public void run() {
             while (true) {
+                System.out.println(Thread.currentThread().getName()
+                        +" is READY to execute task.");
                 Runnable task;
                 synchronized (workerQueue) {
                     while (workerQueue.isEmpty() && !isShutdown) {
@@ -50,26 +56,26 @@ public class CustomThreadPoolExecutor {
                             e.printStackTrace();
                         }
                     }
+                }
                     task = workerQueue.poll();
-                    if (isShutdown && task != null) {
-                        throw new IllegalStateException(String.format(
-                                "Cannot accept %s tasks. The pool has been shutdown.", task.toString()));
-                    }
-                    if (workerQueue.contains(POISON_PILL)) {
-                        workerQueue.add(POISON_PILL);
+                    System.out.println(Thread.currentThread().getName()
+                            +" has taken task.");
+
+                    if (task==null) {
                         return;
                     }
-                    if (!isShutdown && task != null) {
+                    if (task != null) {
                         try {
-                            Thread.sleep(500);
                             task.run();
+                            System.out.println(Thread.currentThread().getName()
+                                    +" has EXECUTED task.");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
                     }
 
-                }
+
             }
         }
     }

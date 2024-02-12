@@ -5,15 +5,20 @@ import java.util.UUID;
 public class MainApplication {
     public static void main(String[] args) throws InterruptedException {
         CustomThreadPoolExecutor threadPoolExecutor = new CustomThreadPoolExecutor(3);
-
-            threadPoolExecutor.execute(() -> System.out.println(UUID.randomUUID() + "print task " + Thread.currentThread().getName()));
-            threadPoolExecutor.execute(() -> System.out.println(UUID.randomUUID() + "print task " + Thread.currentThread().getName()));
-            threadPoolExecutor.execute(() -> System.out.println(UUID.randomUUID() + "print task " + Thread.currentThread().getName()));
-            threadPoolExecutor.execute(() -> System.out.println(UUID.randomUUID() + "print task " + Thread.currentThread().getName()));
-            threadPoolExecutor.execute(() -> System.out.println(UUID.randomUUID() + "print task " + Thread.currentThread().getName()));
-            threadPoolExecutor.execute(() -> System.out.println(UUID.randomUUID() + "print task " + Thread.currentThread().getName()));
+        Runnable task1=new Task();
+        threadPoolExecutor.execute(task1);
+        threadPoolExecutor.execute(task1);
+        threadPoolExecutor.execute(task1);
+        threadPoolExecutor.execute(task1);
+        threadPoolExecutor.execute(task1);
+        threadPoolExecutor.execute(task1);
+        threadPoolExecutor.execute(task1);
+        threadPoolExecutor.execute(task1);
 
         threadPoolExecutor.shutdown();
+        threadPoolExecutor.execute(task1);
+        threadPoolExecutor.execute(task1);
+
     }
 
     }
