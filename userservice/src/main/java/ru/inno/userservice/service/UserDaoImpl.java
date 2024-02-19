@@ -1,19 +1,25 @@
 package ru.inno.userservice.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.inno.userservice.model.User;
 
-
 @Component
 public class UserDaoImpl implements UserDao {
-    @Autowired
+
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public void updateUser(Long id, String newName) {
