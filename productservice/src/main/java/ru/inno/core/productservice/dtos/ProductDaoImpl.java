@@ -23,14 +23,14 @@ public class ProductDaoImpl implements ProductDto {
     @Override
     public List<ProductEntity> getAllProducts() {
 
-        String sql = "SELECT product_id, account, balans, product_type, user_id FROM products";
+        String sql = SQLQueries.SQL_GET_ALL_PRODUCTS;
         List<ProductEntity> productEntities = jdbcTemplate.query(sql, new ProductMapper());
         return productEntities.isEmpty() ? null : productEntities;
     }
 
     @Override
     public List<ProductEntity> getProductsByUserId(Long id) {
-        String sql = "SELECT product_id, account, balans, product_type, user_id FROM products WHERE user_id = ?";
+        String sql = SQLQueries.SQL_GET_PRODUCTS_BY_USER;
         Object[] params = {id};
         List<ProductEntity> productEntities = jdbcTemplate.query(sql, params, new ProductMapper());
         return productEntities.isEmpty() ? null : productEntities;
@@ -38,15 +38,14 @@ public class ProductDaoImpl implements ProductDto {
 
     @Override
     public List<ProductEntity> getProductByProductId(Long id) {
-        String sql = "SELECT product_id, account, balans, product_type, user_id FROM products WHERE product_id = ?";
+        String sql = SQLQueries.SQL_GET_PRODUCTS_BY_ID;
         Object[] params = {id};
-        List<ProductEntity> productEntities = jdbcTemplate.query(sql, params, new ProductMapper());
-        return productEntities.isEmpty() ? null : productEntities;
+        return jdbcTemplate.query(sql, params, new ProductMapper());
     }
 
     @Override
     public void addProductByUser(Long userid, ProductEntity product) {
-        String sql = "INSERT INTO products (product_id, account, balans, product_type, user_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = SQLQueries.SQL_ADD_PRODUCTS_BY_USER;
         Object[] params = {product.getProductId(), product.getAccountNumber(),product.getBalans(),product.getAccType(),userid};
         int[] types = {Types.BIGINT, Types.BIGINT,Types.BIGINT,Types.VARCHAR,Types.BIGINT,};
         jdbcTemplate.update(sql, params, types);

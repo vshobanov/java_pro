@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.inno.core.productservice.dtos.ProductEntityDto;
 import ru.inno.core.productservice.entities.ProductEntity;
 import ru.inno.core.productservice.services.ProductService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/products")
@@ -19,34 +21,34 @@ public class ProductsController {
         this.productService = productService;
     }
 
-    @GetMapping("/all")
-    public List<ProductEntity> getProducts() {
+    @GetMapping("/")
+    public List<ProductEntityDto> getProducts() {
         logger.info("Requested method  getProducts()");
         logger.info(String.valueOf(productService.getProducts()));
         //   return null;
-        return productService.getProducts();
+        return productService.getProducts().stream().map(i -> new ProductEntityDto(i.getProductId(),i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
     }
 
-    @GetMapping("/{product_id}")
-    public List<ProductEntity> getProductByProductId(@PathVariable Long product_id) {
-        logger.info("Requested method getProductByProductId() with {}", product_id);
-        logger.info(String.valueOf(productService.getProductByProductId(product_id)));
+    @GetMapping("/{productId}")
+    public List<ProductEntityDto> getProductByProductId(@PathVariable Long productId) {
+        logger.info("Requested method getProductByProductId() with {}", productId);
+        logger.info(String.valueOf(productService.getProductByProductId(productId)));
         //   return null;
-        return productService.getProductByProductId(product_id);
+        return productService.getProductByProductId(productId).stream().map(i -> new ProductEntityDto(i.getProductId(),i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
     }
 
-    @GetMapping("user/{user_id}")
-    public List<ProductEntity> getProductByUserId(@PathVariable Long user_id) {
-        logger.info("Requested method getProductByUserId() with {}", user_id);
-        logger.info(String.valueOf(productService.getProductsByUserId(user_id)));
-        return productService.getProductsByUserId(user_id);
+    @GetMapping("user/{userId}")
+    public List<ProductEntityDto> getProductByUserId(@PathVariable Long userId) {
+        logger.info("Requested method getProductByUserId() with {}", userId);
+        logger.info(String.valueOf(productService.getProductsByUserId(userId)));
+        return productService.getProductsByUserId(userId).stream().map(i -> new ProductEntityDto(i.getProductId(),i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
     }
 
-    @PostMapping("/{user_id}")
+    @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addProducts(@PathVariable Long user_id,@RequestBody ProductEntity product) {
-        logger.info("Added ProductEntity {} for UserID {}", product.toString(), user_id);
-        productService.addProduct(user_id,product);
+    public void addProducts(@PathVariable Long userId,@RequestBody ProductEntity product) {
+        logger.info("Added ProductEntity {} for UserID {}", product.toString(), userId);
+        productService.addProduct(userId,product);
 
     }
 
