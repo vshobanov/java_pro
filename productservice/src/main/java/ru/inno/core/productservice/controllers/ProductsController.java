@@ -26,7 +26,7 @@ public class ProductsController {
         logger.info("Requested method  getProducts()");
         logger.info(String.valueOf(productService.getProducts()));
         //   return null;
-        return productService.getProducts().stream().map(i -> new ProductEntityDto(i.getProductId(),i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
+        return productService.getProducts().stream().map(i -> new ProductEntityDto(i.getProductId(), i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
     }
 
     @GetMapping("/{productId}")
@@ -34,21 +34,21 @@ public class ProductsController {
         logger.info("Requested method getProductByProductId() with {}", productId);
         logger.info(String.valueOf(productService.getProductByProductId(productId)));
         //   return null;
-        return productService.getProductByProductId(productId).stream().map(i -> new ProductEntityDto(i.getProductId(),i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
+        return productService.getProductByProductId(productId).stream().map(i -> new ProductEntityDto(i.getProductId(), i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
     }
 
     @GetMapping("user/{userId}")
     public List<ProductEntityDto> getProductByUserId(@PathVariable Long userId) {
         logger.info("Requested method getProductByUserId() with {}", userId);
         logger.info(String.valueOf(productService.getProductsByUserId(userId)));
-        return productService.getProductsByUserId(userId).stream().map(i -> new ProductEntityDto(i.getProductId(),i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
+        return productService.getProductsByUserId(userId).stream().map(i -> new ProductEntityDto(i.getProductId(), i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
     }
 
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addProducts(@PathVariable Long userId,@RequestBody ProductEntity product) {
+    public void addProducts(@PathVariable Long userId, @RequestBody ProductEntity product) {
         logger.info("Added ProductEntity {} for UserID {}", product.toString(), userId);
-        productService.addProduct(userId,product);
+        productService.addProduct(userId, product);
 
     }
 

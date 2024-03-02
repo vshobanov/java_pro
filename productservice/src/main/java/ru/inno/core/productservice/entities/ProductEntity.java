@@ -1,22 +1,18 @@
 package ru.inno.core.productservice.entities;
 
-import java.util.UUID;
 
 public class ProductEntity {
+
+    AccType accType;
     private Long productId;
     private Long accountNumber;
     private Long balans;
-    private String accType;
 
-    public ProductEntity(Long productId, Long accountNumber, Long balans, String accType) {
+    public ProductEntity(Long productId, Long accountNumber, Long balans, AccType accType) {
         this.productId = productId;
         this.accountNumber = accountNumber;
-        this.accType = accType;
         this.balans = balans;
-    }
-
-    public ProductEntity() {
-
+        this.accType = accType;
     }
 
     public Long getProductId() {
@@ -35,11 +31,11 @@ public class ProductEntity {
         this.accountNumber = accountNumber;
     }
 
-    public String getAccType() {
+    public AccType getAccType() {
         return accType;
     }
 
-    public void setAccType(String accType) {
+    public void setAccType(AccType accType) {
         this.accType = accType;
     }
 
@@ -60,4 +56,6 @@ public class ProductEntity {
                 ", balans=" + balans +
                 '}';
     }
+
+    public enum AccType {card, account;}
 }

@@ -1,7 +1,7 @@
 package ru.inno.core.productservice.services;
 
 import org.springframework.stereotype.Service;
-import ru.inno.core.productservice.dtos.ProductDto;
+import ru.inno.core.productservice.dao.ProductDao;
 import ru.inno.core.productservice.entities.ProductEntity;
 
 import java.util.List;
@@ -9,29 +9,29 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductDto productDto;
+    private final ProductDao productDao;
 
-    public ProductServiceImpl(ProductDto productDto) {
-        this.productDto = productDto;
+    public ProductServiceImpl(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
     @Override
     public List<ProductEntity> getProductsByUserId(Long id) {
-        return productDto.getProductsByUserId(id);
+        return productDao.getProductsByUserId(id);
     }
 
     @Override
     public List<ProductEntity> getProductByProductId(Long id) {
-        return productDto.getProductByProductId(id);
+        return productDao.getProductByProductId(id);
     }
 
     @Override
     public List<ProductEntity> getProducts() {
-        return productDto.getAllProducts();
+        return productDao.getAllProducts();
     }
 
     @Override
     public void addProduct(Long userid, ProductEntity product) {
-        productDto.addProductByUser(userid, product);
+        productDao.addProductByUser(userid, product);
     }
 }

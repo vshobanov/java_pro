@@ -1,10 +1,10 @@
-package ru.inno.core.productservice.dtos;
+package ru.inno.core.productservice.dao;
 
 import ru.inno.core.productservice.entities.ProductEntity;
 
 import java.util.List;
 
-public interface ProductDto {
+public interface ProductDao {
 
     List<ProductEntity> getAllProducts();
 
@@ -12,7 +12,7 @@ public interface ProductDto {
 
     List<ProductEntity> getProductByProductId(Long id);
 
-    void addProductByUser(Long userid,ProductEntity product);
+    void addProductByUser(Long userid, ProductEntity product);
 
 }
 

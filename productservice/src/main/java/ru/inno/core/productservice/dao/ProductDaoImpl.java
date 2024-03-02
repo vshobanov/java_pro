@@ -1,9 +1,10 @@
-package ru.inno.core.productservice.dtos;
+package ru.inno.core.productservice.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import ru.inno.core.productservice.dtos.SQLQueries;
 import ru.inno.core.productservice.entities.ProductEntity;
 
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import java.sql.Types;
 import java.util.List;
 
 @Component
-public class ProductDaoImpl implements ProductDto {
+public class ProductDaoImpl implements ProductDao {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -22,39 +23,32 @@ public class ProductDaoImpl implements ProductDto {
 
     @Override
     public List<ProductEntity> getAllProducts() {
-
-        String sql = SQLQueries.SQL_GET_ALL_PRODUCTS;
-        List<ProductEntity> productEntities = jdbcTemplate.query(sql, new ProductMapper());
-        return productEntities.isEmpty() ? null : productEntities;
+        return jdbcTemplate.query(SQLQueries.SQL_GET_ALL_PRODUCTS, new ProductMapper());
     }
 
     @Override
     public List<ProductEntity> getProductsByUserId(Long id) {
-        String sql = SQLQueries.SQL_GET_PRODUCTS_BY_USER;
         Object[] params = {id};
-        List<ProductEntity> productEntities = jdbcTemplate.query(sql, params, new ProductMapper());
-        return productEntities.isEmpty() ? null : productEntities;
+        return jdbcTemplate.query(SQLQueries.SQL_GET_PRODUCTS_BY_USER, params, new ProductMapper());
     }
 
     @Override
     public List<ProductEntity> getProductByProductId(Long id) {
-        String sql = SQLQueries.SQL_GET_PRODUCTS_BY_ID;
         Object[] params = {id};
-        return jdbcTemplate.query(sql, params, new ProductMapper());
+        return jdbcTemplate.query(SQLQueries.SQL_GET_PRODUCTS_BY_ID, params, new ProductMapper());
     }
 
     @Override
     public void addProductByUser(Long userid, ProductEntity product) {
-        String sql = SQLQueries.SQL_ADD_PRODUCTS_BY_USER;
-        Object[] params = {product.getProductId(), product.getAccountNumber(),product.getBalans(),product.getAccType(),userid};
-        int[] types = {Types.BIGINT, Types.BIGINT,Types.BIGINT,Types.VARCHAR,Types.BIGINT,};
-        jdbcTemplate.update(sql, params, types);
+        Object[] params = {product.getProductId(), product.getAccountNumber(), product.getBalans(), product.getAccType(), userid};
+        int[] types = {Types.BIGINT, Types.BIGINT, Types.BIGINT, Types.VARCHAR, Types.BIGINT,};
+        jdbcTemplate.update(SQLQueries.SQL_ADD_PRODUCTS_BY_USER, params, types);
     }
 
     private static final class ProductMapper implements RowMapper<ProductEntity> {
         @Override
         public ProductEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new ProductEntity(rs.getLong("product_id"), rs.getLong("account"), rs.getLong("balans"), rs.getString("product_type"));
+            return new ProductEntity(rs.getLong("product_id"), rs.getLong("account"), rs.getLong("balans"), ProductEntity.AccType.valueOf(rs.getString("product_type")));
         }
     }
 
