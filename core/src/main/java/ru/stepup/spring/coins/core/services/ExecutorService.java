@@ -17,7 +17,7 @@ public class ExecutorService {
     public ExecuteCoinsResponse execute(ExecuteCoinsRequest request) {
         CoinsExecuteDtoRs response = executorIntegration.execute(request);
         return new ExecuteCoinsResponse(
-                response.id(),
+                response.coinsTransactionId(),
                 response.status()
         );
     }

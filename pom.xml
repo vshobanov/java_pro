@@ -6,6 +6,7 @@
 
 	<modules>
 		<module>core</module>
+		<module>productservice</module>
 	</modules>
 
 	<groupId>ru.stepup.spring.coins</groupId>
