@@ -30,11 +30,11 @@ public class ProductsController {
     }
 
     @GetMapping("/{productId}")
-    public List<ProductEntityDto> getProductByProductId(@PathVariable Long productId) {
-        logger.info("Requested method getProductByProductId() with {}", productId);
-        logger.info(String.valueOf(productService.getProductByProductId(productId)));
+    public List<ProductEntityDto> getProductByProductId(@PathVariable Long productId, @RequestHeader(value = "USERID") String userId) {
+        logger.info("Requested method getProductByProductId() with {} and userId {}", productId, userId);
+        logger.info(String.valueOf(productService.getProductByProductId(productId, userId)));
         //   return null;
-        return productService.getProductByProductId(productId).stream().map(i -> new ProductEntityDto(i.getProductId(), i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
+        return productService.getProductByProductId(productId, userId).stream().map(i -> new ProductEntityDto(i.getProductId(), i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
     }
 
     @GetMapping("user/{userId}")

@@ -1,11 +1,9 @@
 package ru.stepup.spring.coins.core.controllers;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.stepup.spring.coins.core.api.ExecuteCoinsRequest;
 import ru.stepup.spring.coins.core.api.ExecuteCoinsResponse;
+import ru.stepup.spring.coins.core.api.GetProductsResponse;
 import ru.stepup.spring.coins.core.services.CoinsService;
 
 @RestController
@@ -18,7 +16,13 @@ public class CoinsController {
     }
 
     @PostMapping("/execute")
-    public ExecuteCoinsResponse execute(@RequestBody ExecuteCoinsRequest request) {
-        return coinsService.execute(request);
+    public ExecuteCoinsResponse execute(@RequestBody ExecuteCoinsRequest request, @RequestHeader(value = "USERID") String userId) {
+        return coinsService.execute(request, userId);
     }
+
+    @GetMapping("/products")
+    public GetProductsResponse getProducts(@RequestHeader(value = "USERID") String userId) {
+        return coinsService.getProducts(userId);
+    }
+
 }

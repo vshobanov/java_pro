@@ -3,7 +3,9 @@ package ru.stepup.spring.coins.core.services;
 import org.springframework.stereotype.Service;
 import ru.stepup.spring.coins.core.api.ExecuteCoinsRequest;
 import ru.stepup.spring.coins.core.api.ExecuteCoinsResponse;
+import ru.stepup.spring.coins.core.api.GetProductsResponse;
 import ru.stepup.spring.coins.core.integrations.ExecutorIntegration;
+import ru.stepup.spring.coins.core.integrations.ProductIntergationRestTemplate;
 import ru.stepup.spring.coins.core.integrations.dtos.CoinsExecuteDtoRs;
 
 @Service
@@ -21,4 +23,6 @@ public class ExecutorService {
                 response.status()
         );
     }
+
+
 }

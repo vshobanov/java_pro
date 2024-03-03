@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestClient;
 import ru.stepup.spring.coins.core.api.ExecuteCoinsRequest;
+import ru.stepup.spring.coins.core.api.GetProductsResponse;
 import ru.stepup.spring.coins.core.exceptions.IntegrationException;
 import ru.stepup.spring.coins.core.integrations.dtos.CoinsExecuteDtoRq;
 import ru.stepup.spring.coins.core.integrations.dtos.CoinsExecuteDtoRs;
@@ -40,4 +41,5 @@ public class ExecutorIntegrationRestClient implements ExecutorIntegration {
             return null;
         }
     }
+
 }

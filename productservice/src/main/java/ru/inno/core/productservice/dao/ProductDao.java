@@ -10,7 +10,7 @@ public interface ProductDao {
 
     List<ProductEntity> getProductsByUserId(Long id);
 
-    List<ProductEntity> getProductByProductId(Long id);
+    List<ProductEntity> getProductByProductId(Long id, String userId);
 
     void addProductByUser(Long userid, ProductEntity product);
 

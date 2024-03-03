@@ -33,8 +33,8 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<ProductEntity> getProductByProductId(Long id) {
-        Object[] params = {id};
+    public List<ProductEntity> getProductByProductId(Long id, String userId) {
+        Object[] params = {id, userId};
         return jdbcTemplate.query(SQLQueries.SQL_GET_PRODUCTS_BY_ID, params, new ProductMapper());
     }
 
