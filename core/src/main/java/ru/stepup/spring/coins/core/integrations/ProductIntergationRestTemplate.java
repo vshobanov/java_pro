@@ -35,10 +35,10 @@ public class ProductIntergationRestTemplate implements ProductIntegration {
         HttpHeaders headers = new HttpHeaders();
         headers.set("USERID", userId);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-            logger.info(String.valueOf(restTemplate.exchange("/{productId}", HttpMethod.GET, entity, ProductsGetDtoRs[].class, productId).getStatusCode().is2xxSuccessful()));
-            ProductsGetDtoRs[] prodArray = restTemplate.exchange("/{productId}", HttpMethod.GET, entity, ProductsGetDtoRs[].class, productId).getBody();
-            GetProductsResponse response = new GetProductsResponse(List.of(prodArray));
-            logger.info("ProductService response: {}", response);
-            return prodArray;
+        logger.info(String.valueOf(restTemplate.exchange("/{productId}", HttpMethod.GET, entity, ProductsGetDtoRs[].class, productId).getStatusCode().is2xxSuccessful()));
+        ProductsGetDtoRs[] prodArray = restTemplate.exchange("/{productId}", HttpMethod.GET, entity, ProductsGetDtoRs[].class, productId).getBody();
+        GetProductsResponse response = new GetProductsResponse(List.of(prodArray));
+        logger.info("ProductService response: {}", response);
+        return prodArray;
     }
 }

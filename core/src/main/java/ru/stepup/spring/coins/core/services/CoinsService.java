@@ -9,6 +9,7 @@ import ru.stepup.spring.coins.core.configurations.properties.CoreProperties;
 import ru.stepup.spring.coins.core.exceptions.IntegrationErrorDto;
 import ru.stepup.spring.coins.core.exceptions.IntegrationException;
 import ru.stepup.spring.coins.core.integrations.dtos.ProductsGetDtoRs;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -30,23 +31,15 @@ public class CoinsService {
                 throw new BadRequestException("Указан заблокированный номер кошелька", "BLOCKED_ACCOUNT_NUMBER");
             }
         }
-  //      try {
-            ProductsGetDtoRs[] productsGetDtoRs = productService.getProduct(userId, request.productId());
-
-            if (Arrays.stream(productsGetDtoRs).toList().isEmpty()) {
-                throw new BadRequestException("Запрошен несуществующий номер продукта для клиента", "PRODUCT_NOT_AVAILABLE");
-            }
-            if (0 >= ((int) Arrays.stream(productsGetDtoRs).collect(Collectors.toList()).stream().findAny().get().balans())) {
-                throw new BadRequestException("Недостаточно средств для проведения операции", "NOT_ENOUGH_BALANS");
-            }
-
-            ExecuteCoinsResponse response = executorService.execute(request);
-            return response;
-            //   } catch (Exception e) {
-    //        throw new IntegrationException("Недоступен сервис валидации продуктов, попробуйте повторить запрос позднее",new IntegrationErrorDto("PRODUCTS_SERVICE_NOT_AVALIABLE","Сервис недоступен"));
-
-   //     }
-
+        ProductsGetDtoRs[] productsGetDtoRs = productService.getProduct(userId, request.productId());
+        if (Arrays.stream(productsGetDtoRs).toList().isEmpty()) {
+            throw new BadRequestException("Запрошен несуществующий номер продукта для клиента", "PRODUCT_NOT_AVAILABLE");
+        }
+        if (0 >= ((int) Arrays.stream(productsGetDtoRs).collect(Collectors.toList()).stream().findAny().get().balans())) {
+            throw new BadRequestException("Недостаточно средств для проведения операции", "NOT_ENOUGH_BALANS");
+        }
+        ExecuteCoinsResponse response = executorService.execute(request);
+        return response;
     }
 
 

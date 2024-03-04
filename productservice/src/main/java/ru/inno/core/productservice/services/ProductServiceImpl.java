@@ -26,10 +26,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductEntity> getProductByProductId(Long id, String userId) {
 
-       if  (productDao.getProductByProductId(id, userId).isEmpty()) {
-           throw new BadRequestException("Не найдено продуктов по указанному запросу","EMPTY_RESPONSE");
+        if (productDao.getProductByProductId(id, userId).isEmpty()) {
+            throw new BadRequestException("Не найдено продуктов по указанному запросу", "EMPTY_RESPONSE");
 
-       }
+        }
 
         return productDao.getProductByProductId(id, userId);
     }
