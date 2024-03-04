@@ -33,7 +33,6 @@ public class ProductsController {
     public List<ProductEntityDto> getProductByProductId(@PathVariable Long productId, @RequestHeader(value = "USERID") String userId) {
         logger.info("Requested method getProductByProductId() with {} and userId {}", productId, userId);
         logger.info(String.valueOf(productService.getProductByProductId(productId, userId)));
-        //   return null;
         return productService.getProductByProductId(productId, userId).stream().map(i -> new ProductEntityDto(i.getProductId(), i.getAccountNumber(), i.getBalans(), i.getAccType())).collect(Collectors.toList());
     }
 

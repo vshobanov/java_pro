@@ -30,7 +30,7 @@ public class CoinsService {
                 throw new BadRequestException("Указан заблокированный номер кошелька", "BLOCKED_ACCOUNT_NUMBER");
             }
         }
-        try {
+  //      try {
             ProductsGetDtoRs[] productsGetDtoRs = productService.getProduct(userId, request.productId());
 
             if (Arrays.stream(productsGetDtoRs).toList().isEmpty()) {
@@ -42,10 +42,10 @@ public class CoinsService {
 
             ExecuteCoinsResponse response = executorService.execute(request);
             return response;
-        } catch (Exception e) {
-            throw new IntegrationException("Недоступен сервис валидации продуктов, попробуйте повторить запрос позднее",new IntegrationErrorDto("PRODUCTS_SERVICE_NOT_AVALIABLE","Сервис недоступен"));
+            //   } catch (Exception e) {
+    //        throw new IntegrationException("Недоступен сервис валидации продуктов, попробуйте повторить запрос позднее",new IntegrationErrorDto("PRODUCTS_SERVICE_NOT_AVALIABLE","Сервис недоступен"));
 
-        }
+   //     }
 
     }
 

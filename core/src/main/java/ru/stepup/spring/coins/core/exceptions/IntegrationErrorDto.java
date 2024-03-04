@@ -1,4 +1,4 @@
 package ru.stepup.spring.coins.core.exceptions;
 
-public record IntegrationErrorDto(String code, String message) {
+public record IntegrationErrorDto(String code, String message, String date) {
 }
