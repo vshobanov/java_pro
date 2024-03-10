@@ -1,46 +1,48 @@
 package ru.inno.core.productservice.services;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import ru.inno.core.productservice.dao.ProductDao;
 import ru.inno.core.productservice.entities.ProductEntity;
 import ru.inno.core.productservice.exceptions.BadRequestException;
+import ru.inno.core.productservice.repository.ProductsRepository;
 
 import java.util.List;
+
+import static java.lang.Long.parseLong;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductDao productDao;
 
-    public ProductServiceImpl(ProductDao productDao) {
-        this.productDao = productDao;
+
+    private final ProductsRepository repository;
+
+    public ProductServiceImpl( ProductsRepository repository) {
+
+        this.repository = repository;
     }
 
     @Override
     public List<ProductEntity> getProductsByUserId(Long id) {
-        return productDao.getProductsByUserId(id);
+        return repository.getProductsByUserId(id).stream().toList();
     }
 
     @Override
     public List<ProductEntity> getProductByProductId(Long id, String userId) {
 
-        if (productDao.getProductByProductId(id, userId).isEmpty()) {
+        if (repository.getProductByProductIdAndUserId(id, parseLong(userId)).isEmpty()) {
             throw new BadRequestException("Не найдено продуктов по указанному запросу", "EMPTY_RESPONSE");
 
         }
 
-        return productDao.getProductByProductId(id, userId);
+        return repository.getProductByProductIdAndUserId(id, parseLong(userId)).stream().toList();
     }
 
     @Override
     public List<ProductEntity> getProducts() {
-        return productDao.getAllProducts();
+        return repository.findAll();
     }
 
     @Override
     public void addProduct(Long userid, ProductEntity product) {
-        productDao.addProductByUser(userid, product);
+        repository.save(product);
     }
 }

@@ -1,61 +1,32 @@
 package ru.inno.core.productservice.entities;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name="products")
+@Data
+@NoArgsConstructor
 public class ProductEntity {
-
-    AccType accType;
+    @Id
+    @Column(name = "product_id")
     private Long productId;
+    @Column(name = "account")
     private Long accountNumber;
+    @Column(name = "balans")
     private Long balans;
+    @Column(name="product_type")
+    @Enumerated(EnumType.STRING)
+    AccType accType;
+    @Column(name="user_id")
+    private Long userId;
 
-    public ProductEntity(Long productId, Long accountNumber, Long balans, AccType accType) {
-        this.productId = productId;
-        this.accountNumber = accountNumber;
-        this.balans = balans;
-        this.accType = accType;
+    public ProductEntity(long productId, long account, long balans, AccType productType) {
     }
 
-    public Long getProductId() {
-        return productId;
-    }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
 
-    public Long getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(Long accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public AccType getAccType() {
-        return accType;
-    }
-
-    public void setAccType(AccType accType) {
-        this.accType = accType;
-    }
-
-    public Long getBalans() {
-        return balans;
-    }
-
-    public void setBalans(Long balans) {
-        this.balans = balans;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductEntity{" +
-                "id=" + productId +
-                ", accountNumber=" + accountNumber +
-                ", accType='" + accType + '\'' +
-                ", balans=" + balans +
-                '}';
-    }
 
     public enum AccType {card, account;}
 }
