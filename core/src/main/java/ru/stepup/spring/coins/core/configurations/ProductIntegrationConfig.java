@@ -17,7 +17,6 @@ import ru.stepup.spring.coins.core.integrations.ProductIntergationRestTemplate;
 public class ProductIntegrationConfig {
 
     @Bean
-    @ConditionalOnMissingBean(name = "executorIntegrationRestClient")
     public ProductIntegration productIntegration(
             ProductsProperties productsProperties,
             RestTemplateResponseErrorHandler restTemplateResponseErrorHandler

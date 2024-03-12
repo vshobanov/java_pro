@@ -1,5 +1,6 @@
 package ru.stepup.spring.coins.core.integrations;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -11,11 +12,11 @@ import ru.stepup.spring.coins.core.exceptions.BadRequestException;
 import ru.stepup.spring.coins.core.integrations.dtos.ProductsGetDtoRs;
 
 import java.util.List;
-
+@Slf4j
 public class ProductIntergationRestTemplate implements ProductIntegration {
     private final RestTemplate restTemplate;
 
-    private static final Logger logger = LoggerFactory.getLogger(ExecutorIntegrationRestTemplate.class.getName());
+
 
     public ProductIntergationRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -26,7 +27,7 @@ public class ProductIntergationRestTemplate implements ProductIntegration {
 
         ProductsGetDtoRs[] prodArray = restTemplate.getForObject("/user/{userId}", ProductsGetDtoRs[].class, userId);
         GetProductsResponse response = new GetProductsResponse(List.of(prodArray));
-        logger.info("response: {}", response);
+        log.info("response: {}", response);
         return response;
     }
 
@@ -35,10 +36,10 @@ public class ProductIntergationRestTemplate implements ProductIntegration {
         HttpHeaders headers = new HttpHeaders();
         headers.set("USERID", userId);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        logger.info(String.valueOf(restTemplate.exchange("/{productId}", HttpMethod.GET, entity, ProductsGetDtoRs[].class, productId).getStatusCode().is2xxSuccessful()));
+        log.info(String.valueOf(restTemplate.exchange("/{productId}", HttpMethod.GET, entity, ProductsGetDtoRs[].class, productId).getStatusCode().is2xxSuccessful()));
         ProductsGetDtoRs[] prodArray = restTemplate.exchange("/{productId}", HttpMethod.GET, entity, ProductsGetDtoRs[].class, productId).getBody();
         GetProductsResponse response = new GetProductsResponse(List.of(prodArray));
-        logger.info("ProductService response: {}", response);
+        log.info("ProductService response: {}", response);
         return prodArray;
     }
 }
