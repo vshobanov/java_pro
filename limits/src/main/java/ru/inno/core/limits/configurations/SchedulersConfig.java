@@ -19,7 +19,8 @@ public class SchedulersConfig {
 
     @Scheduled(cron = "${schedulers.restore-limit-task}")
     public void restoreLimit() {
-        log.info("restore-limit task executed...");
+        log.info("Restoring limits for clients");
         limitService.restoreLimit();
+        log.info("Limits have been updated");
     }
 }
