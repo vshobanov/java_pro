@@ -1,8 +1,9 @@
 package ru.inno.core.limits.exceptions;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class BadRequestException extends RuntimeException {
     private final String code;
 

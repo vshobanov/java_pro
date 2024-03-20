@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.inno.core.limits.entities.LimitEntity;
+import ru.inno.core.limits.exceptions.BadRequestException;
 import ru.inno.core.limits.repository.LimitsRepository;
 
 import java.util.List;
@@ -33,7 +34,10 @@ public class LimitServiceImpl implements LimitService{
 
     @Override
     public void updateLimit(Long userId, Long limit) {
-        Long currLimit = limitsRepository.getLimitEntitiesByUserId(userId).get().getDailyLimit() - limit ;
+        Long currLimit = limitsRepository.getLimitEntitiesByUserId(userId).get().getDailyLimit() + limit ;
+        if (currLimit <= 0) {
+            throw new BadRequestException("Insufficient limit to carry out a transaction in requested amount", "INSUFFICIENT_AMOUNT");
+        }
         limitsRepository.updateLimitEntitiesByUserId(userId, currLimit);
     }
 

@@ -13,10 +13,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-  sql:
-    init:
-      schema-locations: limits
 
 initial-limit-amount: 10000
 schedulers:
-  restore-limit-task: "0 * * * * *"
+  restore-limit-task: "5 * * * * *"
