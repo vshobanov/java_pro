@@ -1,37 +1,50 @@
 package ru.inno.core.productservice.services;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
-import ru.inno.core.productservice.dao.ProductDao;
 import ru.inno.core.productservice.entities.ProductEntity;
+import ru.inno.core.productservice.exceptions.BadRequestException;
+import ru.inno.core.productservice.repository.ProductsRepository;
 
 import java.util.List;
+
+import static java.lang.Long.parseLong;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductDao productDao;
 
-    public ProductServiceImpl(ProductDao productDao) {
-        this.productDao = productDao;
+
+    private final ProductsRepository repository;
+
+    public ProductServiceImpl( ProductsRepository repository) {
+
+        this.repository = repository;
     }
 
     @Override
-    public List<ProductEntity> getProductsByUserId(Long id) {
-        return productDao.getProductsByUserId(id);
+    public Page<ProductEntity> getProductsByUserId(Long id) {
+        return new PageImpl<>(repository.getProductsByUserId(id).stream().toList());
     }
 
     @Override
-    public List<ProductEntity> getProductByProductId(Long id) {
-        return productDao.getProductByProductId(id);
+    public Page<ProductEntity> getProductByProductId(Long id, String userId) {
+
+        if (repository.getProductByProductIdAndUserId(id, parseLong(userId)).isEmpty()) {
+            throw new BadRequestException("Не найдено продуктов по указанному запросу", "EMPTY_RESPONSE");
+
+        }
+
+        return new PageImpl<>(repository.getProductByProductIdAndUserId(id, parseLong(userId)).stream().toList());
     }
 
     @Override
-    public List<ProductEntity> getProducts() {
-        return productDao.getAllProducts();
+    public Page<ProductEntity> getProducts() {
+        return new PageImpl<>(repository.findAll());
     }
 
     @Override
     public void addProduct(Long userid, ProductEntity product) {
-        productDao.addProductByUser(userid, product);
+        repository.save(product);
     }
 }

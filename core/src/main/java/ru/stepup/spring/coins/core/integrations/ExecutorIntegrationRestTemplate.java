@@ -2,16 +2,22 @@ package ru.stepup.spring.coins.core.integrations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 import ru.stepup.spring.coins.core.api.ExecuteCoinsRequest;
+import ru.stepup.spring.coins.core.api.GetProductsResponse;
 import ru.stepup.spring.coins.core.exceptions.IntegrationException;
 import ru.stepup.spring.coins.core.integrations.dtos.CoinsExecuteDtoRq;
 import ru.stepup.spring.coins.core.integrations.dtos.CoinsExecuteDtoRs;
+import ru.stepup.spring.coins.core.integrations.dtos.ProductsGetDtoRs;
 
 import java.util.Collections;
+import java.util.List;
+
 
 public class ExecutorIntegrationRestTemplate implements ExecutorIntegration {
     private final RestTemplate restTemplate;
@@ -38,6 +44,7 @@ public class ExecutorIntegrationRestTemplate implements ExecutorIntegration {
                     httpHeaders
             );
             CoinsExecuteDtoRs response = restTemplate.postForObject("/payments/execute", request, CoinsExecuteDtoRs.class);
+            logger.info("request: {}", request.getHeaders());
             logger.info("response: {}", response);
             return response;
         } catch (IntegrationException e) {
@@ -45,4 +52,7 @@ public class ExecutorIntegrationRestTemplate implements ExecutorIntegration {
             return null;
         }
     }
+
+
 }
+

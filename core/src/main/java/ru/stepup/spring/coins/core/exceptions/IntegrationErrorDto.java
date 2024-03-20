@@ -1,4 +1,6 @@
 package ru.stepup.spring.coins.core.exceptions;
 
-public record IntegrationErrorDto(String code, String message) {
+import java.time.LocalDateTime;
+
+public record IntegrationErrorDto(String code, String message, LocalDateTime date) {
 }
