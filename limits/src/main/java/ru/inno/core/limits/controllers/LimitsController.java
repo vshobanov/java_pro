@@ -21,24 +21,24 @@ public class LimitsController {
     }
 
     @GetMapping
-    public PageDto<LimitEntityDto> getLimitsByUserId( @RequestHeader(value = "USERID") String userId) {
+    public PageDto<LimitEntityDto> getLimitsByUserId(@RequestHeader(value = "USERID") String userId) {
         log.info("Requested method getLimitsByUserId() with userId {}", userId);
         log.info(String.valueOf(limitService.getLimitByUserId(Long.valueOf(userId))));
-        return new PageDto<>(limitService.getLimitByUserId(Long.valueOf(userId)).stream().map(i-> new LimitEntityDto(i.getUserId(), i.getDailyLimit())).collect(Collectors.toList()));
+        return new PageDto<>(limitService.getLimitByUserId(Long.valueOf(userId)).stream().map(i -> new LimitEntityDto(i.getUserId(), i.getDailyLimit())).collect(Collectors.toList()));
     }
 
     @PostMapping("/update")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void update(@RequestBody LimitEntityDto limitEntityDto) {
         log.info("Updating limit for {} initiated", limitEntityDto.toString());
-        limitService.updateLimit(limitEntityDto.getUserId(),limitEntityDto.getDailyLimit());
+        limitService.updateLimit(limitEntityDto.getUserId(), limitEntityDto.getDailyLimit());
     }
 
     @PostMapping("/payment")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void payment(@RequestBody LimitEntityDto limitEntityDto) {
         log.info("Updating limit for {} initiated", limitEntityDto.toString());
-        limitService.updateLimit(limitEntityDto.getUserId(),limitEntityDto.getDailyLimit());
+        limitService.updateLimit(limitEntityDto.getUserId(), limitEntityDto.getDailyLimit());
     }
 
 

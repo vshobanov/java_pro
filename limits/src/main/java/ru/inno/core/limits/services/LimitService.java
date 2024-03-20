@@ -6,8 +6,11 @@ import java.util.List;
 
 public interface LimitService {
     List<LimitEntity> getLimitByUserId(Long userId);
-    void updateLimit (Long userId, Long limit);
-    void restoreLimit ();
-    void addLimit (Long userId);
+
+    void updateLimit(Long userId, Long limit);
+
+    void restoreLimit();
+
+    void addLimit(Long userId);
 
 }

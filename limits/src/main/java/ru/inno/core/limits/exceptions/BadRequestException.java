@@ -1,6 +1,5 @@
 package ru.inno.core.limits.exceptions;
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

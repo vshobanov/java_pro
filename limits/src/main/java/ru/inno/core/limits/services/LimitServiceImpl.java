@@ -11,30 +11,28 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class LimitServiceImpl implements LimitService{
+public class LimitServiceImpl implements LimitService {
 
     private final LimitsRepository limitsRepository;
+    @Value("${initial-limit-amount}")
+    private Long amount;
 
     public LimitServiceImpl(LimitsRepository limitsRepository) {
         this.limitsRepository = limitsRepository;
     }
 
-    @Value("${initial-limit-amount}")
-    private Long amount;
-
     @Override
     public List<LimitEntity> getLimitByUserId(Long userId) {
-        if (limitsRepository.getLimitEntitiesByUserId(userId).stream().toList().isEmpty())
-        {
+        if (limitsRepository.getLimitEntitiesByUserId(userId).stream().toList().isEmpty()) {
             addLimit(userId);
-            log.info("Added record for new user {}",userId);
+            log.info("Added record for new user {}", userId);
         }
         return limitsRepository.getLimitEntitiesByUserId(userId).stream().toList();
     }
 
     @Override
     public void updateLimit(Long userId, Long limit) {
-        Long currLimit = limitsRepository.getLimitEntitiesByUserId(userId).get().getDailyLimit() + limit ;
+        Long currLimit = limitsRepository.getLimitEntitiesByUserId(userId).get().getDailyLimit() + limit;
         if (currLimit <= 0) {
             throw new BadRequestException("Insufficient limit to carry out a transaction in requested amount", "INSUFFICIENT_AMOUNT");
         }

@@ -10,12 +10,12 @@ import ru.inno.core.limits.entities.LimitEntity;
 
 import java.util.Optional;
 
-public interface LimitsRepository extends JpaRepository<LimitEntity,Long> {
+public interface LimitsRepository extends JpaRepository<LimitEntity, Long> {
     Optional<LimitEntity> getLimitEntitiesByUserId(Long id);
 
     @Transactional
     @Query(value = "insert into LimitEntity (userId, dailyLimit) VALUES (:id, 10000)")
-     void addLimitEntitiesByUserId(@Param("id") Long id);
+    void addLimitEntitiesByUserId(@Param("id") Long id);
 
     @Transactional
     @Modifying
