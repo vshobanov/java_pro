@@ -1,11 +1,11 @@
 package ru.inno.core.limits.exceptions;
 
-public class BadRequestException extends RuntimeException {
-    private String code;
+import lombok.Data;
 
-    public String getCode() {
-        return code;
-    }
+@Data
+public class BadRequestException extends RuntimeException {
+    private final String code;
+
 
     public BadRequestException(String message, String code) {
         super(message);

@@ -14,7 +14,7 @@ public interface LimitsRepository extends JpaRepository<LimitEntity,Long> {
     Optional<LimitEntity> getLimitEntitiesByUserId(Long id);
 
     @Transactional
-    @Query("insert into LimitEntity (userId, dailyLimit) VALUES (:id, 10000)")
+    @Query(value = "insert into LimitEntity (userId, dailyLimit) VALUES (:id, 10000)")
      void addLimitEntitiesByUserId(@Param("id") Long id);
 
     @Transactional
