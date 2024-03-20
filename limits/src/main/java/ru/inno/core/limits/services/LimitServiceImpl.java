@@ -32,7 +32,7 @@ public class LimitServiceImpl implements LimitService {
 
     @Override
     public void updateLimit(Long userId, Long limit) {
-        Long currLimit = limitsRepository.getLimitEntitiesByUserId(userId).get().getDailyLimit() + limit;
+        long currLimit = limitsRepository.getLimitEntitiesByUserId(userId).get().getDailyLimit() + limit;
         if (currLimit <= 0) {
             throw new BadRequestException("Insufficient limit to carry out a transaction in requested amount", "INSUFFICIENT_AMOUNT");
         }
@@ -48,6 +48,6 @@ public class LimitServiceImpl implements LimitService {
 
     @Override
     public void addLimit(Long userId) {
-        limitsRepository.addLimitEntitiesByUserId(userId);
+        limitsRepository.addLimitEntitiesByUserId(userId,amount);
     }
 }
