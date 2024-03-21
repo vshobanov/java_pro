@@ -3,6 +3,8 @@ package ru.inno.core.limits.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.inno.core.limits.api.LimitsRq;
+import ru.inno.core.limits.api.LimitsRs;
 import ru.inno.core.limits.dtos.LimitEntityDto;
 import ru.inno.core.limits.dtos.PageDto;
 import ru.inno.core.limits.services.LimitService;
@@ -29,16 +31,16 @@ public class LimitsController {
 
     @PostMapping("/update")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void update(@RequestBody LimitEntityDto limitEntityDto) {
-        log.info("Updating limit for {} initiated", limitEntityDto.toString());
-        limitService.updateLimit(limitEntityDto.getUserId(), limitEntityDto.getDailyLimit());
+    public LimitsRs update(@RequestHeader(value = "USERID") String userId, @RequestBody LimitsRq request) {
+        log.info("Updating limit for {} initiated", userId);
+        return limitService.updateLimit(Long.valueOf(userId), request.paymentAmount());
     }
 
     @PostMapping("/payment")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void payment(@RequestBody LimitEntityDto limitEntityDto) {
-        log.info("Updating limit for {} initiated", limitEntityDto.toString());
-        limitService.updateLimit(limitEntityDto.getUserId(), limitEntityDto.getDailyLimit());
+    public LimitsRs payment(@RequestHeader(value = "USERID") String userId, @RequestBody LimitsRq request) {
+        log.info("Updating limit for {} initiated", userId);
+        return limitService.updateLimit(Long.valueOf(userId), request.paymentAmount());
     }
 
 
