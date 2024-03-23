@@ -1,5 +1,6 @@
 package ru.inno.core.limits.controllers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +14,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/limits")
 public class LimitsController {
 
     private final LimitService limitService;
-
-    public LimitsController(LimitService limitService) {
-        this.limitService = limitService;
-    }
 
     @GetMapping
     public PageDto<LimitEntityDto> getLimitsByUserId(@RequestHeader(value = "USERID") String userId) {

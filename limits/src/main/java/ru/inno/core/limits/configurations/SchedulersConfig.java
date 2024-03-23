@@ -1,5 +1,6 @@
 package ru.inno.core.limits.configurations;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -8,13 +9,10 @@ import ru.inno.core.limits.services.LimitService;
 
 @Configuration
 @EnableScheduling
+@RequiredArgsConstructor
 @Slf4j
 public class SchedulersConfig {
     private final LimitService limitService;
-
-    public SchedulersConfig(LimitService limitService) {
-        this.limitService = limitService;
-    }
 
     @Scheduled(cron = "${schedulers.restore-limit-task}")
     public void restoreLimit() {

@@ -13,9 +13,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-
+logging:
+  level:
+    org:
+      springframework:
+        transaction: trace
 schedulers:
-  restore-limit-task: "5 * * * * *"
+  restore-limit-task: "0 0 0 * * *"
 
 limits:
   initial-limit-amount: 10000

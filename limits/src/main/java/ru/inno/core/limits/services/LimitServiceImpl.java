@@ -1,7 +1,11 @@
 package ru.inno.core.limits.services;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import ru.inno.core.limits.api.LimitsRs;
 import ru.inno.core.limits.configurations.properties.LimitsProperties;
 import ru.inno.core.limits.entities.LimitEntity;
@@ -12,16 +16,12 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class LimitServiceImpl implements LimitService {
 
     private final LimitsRepository limitsRepository;
     private final LimitsProperties limitsProperties;
 
-
-    public LimitServiceImpl(LimitsRepository limitsRepository, LimitsProperties limitsProperties) {
-        this.limitsRepository = limitsRepository;
-        this.limitsProperties = limitsProperties;
-    }
 
     @Override
     public List<LimitEntity> getLimitByUserId(Long userId) {
@@ -33,6 +33,7 @@ public class LimitServiceImpl implements LimitService {
     }
 
     @Override
+    @Transactional
     public LimitsRs updateLimit(Long userId, Long limit) {
         if (limitsRepository.getLimitEntitiesByUserId(userId).stream().toList().isEmpty()) {
             limitsRepository.addLimitEntitiesByUserId(userId, limitsProperties.getInitialLimitAmount());
