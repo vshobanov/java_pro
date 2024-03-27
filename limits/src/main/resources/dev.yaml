@@ -1,0 +1,5 @@
+schedulers:
+  restore-limit-task: "5 * * * * *"
+
+limits:
+  initial-limit-amount: 10000

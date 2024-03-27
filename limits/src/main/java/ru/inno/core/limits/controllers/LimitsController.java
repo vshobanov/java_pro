@@ -10,6 +10,7 @@ import ru.inno.core.limits.dtos.LimitEntityDto;
 import ru.inno.core.limits.dtos.PageDto;
 import ru.inno.core.limits.services.LimitService;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,8 +24,11 @@ public class LimitsController {
     @GetMapping
     public PageDto<LimitEntityDto> getLimitsByUserId(@RequestHeader(value = "USERID") String userId) {
         log.info("Requested method getLimitsByUserId() with userId {}", userId);
-        log.info(String.valueOf(limitService.getLimitByUserId(Long.valueOf(userId))));
-        return new PageDto<>(limitService.getLimitByUserId(Long.valueOf(userId)).stream().map(i -> new LimitEntityDto(i.getUserId(), i.getDailyLimit())).collect(Collectors.toList()));
+        List<LimitEntityDto> limitEntities = limitService.getLimitByUserId(Long.parseLong(userId)).stream()
+                .map(i -> new LimitEntityDto(i.getUserId(), i.getDailyLimit()))
+                .collect(Collectors.toList());
+        log.info("Limit received {}:", limitEntities.stream().toList());
+        return new PageDto<>(limitEntities);
     }
 
     @PostMapping("/update")
@@ -41,6 +45,11 @@ public class LimitsController {
         return limitService.updateLimit(Long.valueOf(userId), request.paymentAmount());
     }
 
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void updateAllLimits() {
+        limitService.restoreLimit();
+    }
 
 }
 
