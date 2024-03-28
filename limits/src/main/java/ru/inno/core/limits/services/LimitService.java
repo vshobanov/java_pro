@@ -4,9 +4,10 @@ import ru.inno.core.limits.api.LimitsRs;
 import ru.inno.core.limits.entities.LimitEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LimitService {
-    List<LimitEntity> getLimitByUserId(Long userId);
+    Optional<LimitEntity> getLimitByUserId(Long userId);
 
     LimitsRs updateLimit(Long userId, Long limit);
 

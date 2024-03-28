@@ -11,6 +11,7 @@ import ru.inno.core.limits.exceptions.BadRequestException;
 import ru.inno.core.limits.repository.LimitsRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -22,28 +23,29 @@ public class LimitServiceImpl implements LimitService {
 
 
     @Override
-    public List<LimitEntity> getLimitByUserId(Long userId) {
-        List<LimitEntity> limitEntities = limitsRepository.getLimitEntitiesByUserId(userId).stream().toList();
-        if (limitEntities.isEmpty()) {
-            limitsRepository.addLimitEntitiesByUserId(userId, limitsProperties.getInitialLimitAmount());
+    public Optional<LimitEntity> getLimitByUserId(Long userId) {
+        Optional<LimitEntity> limitEntity = limitsRepository.getLimitEntitiesByUserId(userId);
+        if (limitEntity.isEmpty()) {
+            LimitEntity  newlimitEntity = new LimitEntity(userId,limitsProperties.getInitialLimitAmount() );
+            limitsRepository.addLimitEntitiesByUserId(newlimitEntity.getUserId(), newlimitEntity.getDailyLimit());
             log.info("Added record for new user {}", userId);
-            limitEntities = limitsRepository.getLimitEntitiesByUserId(userId).stream()
-                    .toList();
+            limitEntity = Optional.of(newlimitEntity);
         }
-        return limitEntities;
+        return limitEntity;
     }
 
     @Override
     @Transactional
     public LimitsRs updateLimit(Long userId, Long limit) {
-        List<LimitEntity> limitEntities = getLimitByUserId(userId);
-        long currLimit = limitEntities.stream().map(LimitEntity::getDailyLimit).findFirst().get() + limit;
+        Optional<LimitEntity> limitEntity = getLimitByUserId(userId);
+        long currLimit = limitEntity.get().getDailyLimit() + limit;
         if (currLimit <= 0) {
             throw new BadRequestException("Insufficient limit to carry out a transaction in requested amount", "INSUFFICIENT_AMOUNT_LIMIT");
         }
         if (currLimit > limitsProperties.getInitialLimitAmount()) {
-            throw new BadRequestException(String.format("The maximum limit value - %2d has been reached", limitsProperties.getInitialLimitAmount()), "MAX_LIMIT_REACHED");
-        }
+            currLimit = limitsProperties.getInitialLimitAmount();
+            log.warn("Updating the limit exceeding the maximum value has been requested. The limit has been adjusted to the maximum value ");
+                   }
         limitsRepository.updateLimitEntitiesByUserId(userId, currLimit);
         return new LimitsRs(currLimit, "LIMIT_UPDATED", String.format("Limit successfully updated at %2d", limit));
     }

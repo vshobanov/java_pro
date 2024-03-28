@@ -23,7 +23,7 @@ public class LimitsController {
 
     @GetMapping
     public PageDto<LimitEntityDto> getLimitsByUserId(@RequestHeader(value = "USERID") String userId) {
-        log.info("Requested method getLimitsByUserId() with userId {}", userId);
+        log.debug("Requested method getLimitsByUserId() with userId {}", userId);
         List<LimitEntityDto> limitEntities = limitService.getLimitByUserId(Long.parseLong(userId)).stream()
                 .map(i -> new LimitEntityDto(i.getUserId(), i.getDailyLimit()))
                 .collect(Collectors.toList());
@@ -34,14 +34,14 @@ public class LimitsController {
     @PostMapping("/update")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public LimitsRs update(@RequestHeader(value = "USERID") String userId, @RequestBody LimitsRq request) {
-        log.info("Updating limit for {} initiated", userId);
+        log.debug("Updating limit for {} initiated", userId);
         return limitService.updateLimit(Long.valueOf(userId), request.paymentAmount());
     }
 
     @PostMapping("/payment")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public LimitsRs payment(@RequestHeader(value = "USERID") String userId, @RequestBody LimitsRq request) {
-        log.info("Updating limit for {} initiated", userId);
+        log.debug("Updating limit for {} initiated", userId);
         return limitService.updateLimit(Long.valueOf(userId), request.paymentAmount());
     }
 
